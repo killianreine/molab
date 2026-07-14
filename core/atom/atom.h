@@ -18,8 +18,8 @@ typedef struct {
 // ######################################## FUNCTIONS ########################################
 // ###########################################################################################
 
-Atom*           create_stable_atom(char*, char*, char*, float, int);             // create an stable atom
-Atom*           create_atom_with_electrons(char*, char*, char*, float, int, int);        // with number of electron
+Atom*           create_stable_atom(char*, char*, char*, float, int);                        // create an stable atom
+Atom*           create_atom_with_electrons(char*, char*, char*, float, int, int);           // with number of electron
 
 void            delete_atom(Atom*);
 

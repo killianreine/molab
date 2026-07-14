@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Molab - Chemical reaction simulator</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #111; font-family: sans-serif; }
+        #controls {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            display: flex;
+            gap: 8px;
+        }
+        #controls button {
+            background: #222;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 8px 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #controls button.active {
+            background: #444;
+            border-color: #aaa;
+        }
+        #info {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            color: #fff;
+            font-family: sans-serif;
+            font-size: 14px;
+            z-index: 1;
+        }
+        #lewis-view {
+            position: absolute;
+            inset: 0;
+            display: none;
+            overflow: hidden;
+            cursor: grab;
+            background: #111;
+        }
+        #lewis-view.visible {
+            display: block;
+        }
+        #lewis-view.dragging {
+            cursor: grabbing;
+        }
+        .lewis-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .lewis-diagram {
+            position: relative;
+            width: 220px;
+            height: 220px;
+        }
+        .lewis-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 64px;
+            font-weight: bold;
+        }
+        .lewis-dot {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #ff0000;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "../node_modules/three/build/three.module.min.js"
+        }
+    }
+    </script>
+    <script>
+        globalThis.__atomModuleReady = new Promise((resolve) => {
+            let done = false;
+            const finish = () => {
+                if (!done) {
+                    done = true;
+                    resolve(globalThis.Module);
+                }
+            };
+
+            const module = globalThis.Module || {};
+            const previousInit = module.onRuntimeInitialized;
+            module.onRuntimeInitialized = () => {
+                previousInit?.();
+                finish();
+            };
+            globalThis.Module = module;
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            const message = event.reason?.message || event.reason || 'chargement impossible';
+            document.getElementById('info').textContent = `Erreur : ${message}`;
+        });
+    </script>
+    <script src="atom.js"></script>
+</head>
+<body>
+    <div id="controls">
+        <button id="btn-3d" class="active" type="button">3D</button>
+        <button id="btn-lewis" type="button">Lewis</button>
+    </div>
+    <div id="lewis-view"></div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
